@@ -368,7 +368,7 @@ var main = (function () {
     }
 
     Terminal.prototype.miaou = function () {
-        window.open('./miaou/main.html', '_blank');
+        window.open('./miaou/index.html', '_blank');
         var result = "Opening in new tab.";
         this.type(result, this.unlock.bind(this));
     }
