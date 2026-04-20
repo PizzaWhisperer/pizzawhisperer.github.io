@@ -381,7 +381,9 @@ var main = (function () {
     Terminal.prototype.help = function () {
         var result = configs.getInstance().general_help + "\n\n";
         for (var cmd in cmds) {
-            result += cmds[cmd].value + " - " + cmds[cmd].help + "\n";
+            if (cmds[cmd].value != "miaou") {
+                result += cmds[cmd].value + " - " + cmds[cmd].help + "\n";
+            }
         }
         this.type(result.trim(), this.unlock.bind(this));
     };
