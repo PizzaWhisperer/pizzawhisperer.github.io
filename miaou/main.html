@@ -37,6 +37,7 @@
 
 <script>
 const SECRET_CODE = "160825";
+let currentIndex = 0;
 
 const input = document.getElementById("codeInput");
 const glitchLayer = document.querySelector(".glitch-layer");
@@ -75,19 +76,32 @@ const images = [
 ];
 
 function reloadImage() {
-    const img = images[Math.floor(Math.random() * images.length)];
+    currentIndex = Math.floor(Math.random() * images.length);
+    const img = images[currentIndex];
     const el = document.getElementById("image");
     el.classList.remove("glitch");
     void el.offsetWidth;
     el.src = img + "?t=" + Date.now();
     el.classList.add("glitch");
 }
-
 window.onload = reloadImage;
 
-function send() {
-    fetch("https://YOUR-NGROK-URL/miaou", {
-        method: "POST"
+async function getNgrokURL() {
+    const res = await fetch("/config.json?t=" + Date.now());
+    const data = await res.json();
+    return data.ngrok;
+}
+
+async function send() {
+    const raspberry = await getNgrokURL();
+    fetch(`https://${raspberry}/miaou`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: currentIndex + 1
+        })
     });
 }
 </script>
