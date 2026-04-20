@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MIAOU</title>
+    <link rel="icon" href="./img/icon.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="lockScreen">
+    <h2>ENTER ACCESS CODE</h2>
+
+    <div class="glitch-wrapper">
+        <input type="password" id="codeInput" placeholder="code..." autofocus />
+        <span class="glitch-layer" data-text="code..."></span>
+    </div>
+</div>
+
+<div class="app" id="content" style="display:none;">
+
+    <div class="title-box">
+        <h1 data-text="MIAOU">MIAOU</h1>
+    </div>
+
+    <div class="image-box">
+        <img id="image" src="" />
+    </div>
+
+    <div class="buttons">
+        <button class="reload" data-text="reload" onclick="reloadImage()">reload</button>
+        <button class="send" data-text="send" onclick="send()">send</button>
+    </div>
+
+</div>
+
+<script>
+const SECRET_CODE = "160825";
+
+const input = document.getElementById("codeInput");
+const glitchLayer = document.querySelector(".glitch-layer");
+
+input.addEventListener("input", () => {
+    glitchLayer.setAttribute(
+        "data-text",
+        input.value.replace(/./g, "•") || "code..."
+    );
+
+    // subtle glitch movement
+    glitchLayer.style.transform = `translate(${Math.random()*4-2}px, ${Math.random()*4-2}px)`;
+});
+
+document.getElementById("codeInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        if (this.value === SECRET_CODE) {
+            unlock();
+        } else {
+            this.value = "";
+            this.placeholder = "Wrong code.";
+            glitchLayer.setAttribute("data-text", "code...");
+        }
+    }
+});
+
+function unlock() {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("content").style.display = "block";
+}
+
+const images = [
+    "./img/cat1.jpg",
+    "./img/cat2.jpg",
+    "./img/cat3.jpg"
+];
+
+function reloadImage() {
+    const img = images[Math.floor(Math.random() * images.length)];
+    const el = document.getElementById("image");
+    el.classList.remove("glitch");
+    void el.offsetWidth;
+    el.src = img + "?t=" + Date.now();
+    el.classList.add("glitch");
+}
+
+window.onload = reloadImage;
+
+function send() {
+    fetch("https://YOUR-NGROK-URL/miaou", {
+        method: "POST"
+    });
+}
+</script>
+
+</body>
+</html>

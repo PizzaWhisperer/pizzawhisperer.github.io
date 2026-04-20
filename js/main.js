@@ -20,6 +20,7 @@ var configs = (function () {
         ping_help: "Send an email.",
         reboot_help: "Reboot the system.",
         sudo_help: "Execute a command as the superuser.",
+        miaou_help: ":)",
         welcome: "Hello world! My name is Mathilde Raynal and I am a PhD student in Security and Privacy @EPFL.\n The available commands on this website are: <i> whoami  </i> to print a short description of me; <i> ping </i> to email me; and <i> ls </i> and <i> cat </i> to list and access files hosted here, i.e., my cv. You can press TAB for autocompletion, and double click to skip text rolling.",
         internet_explorer_warning: "NOTE: I see you're using internet explorer, this website won't work properly.",
         welcome_file_name: "welcome_message",
@@ -122,7 +123,8 @@ var main = (function () {
         HELP: { value: "help", help: configs.getInstance().help_help },
         PING: { value: "ping", help: configs.getInstance().ping_help },
         REBOOT: { value: "reboot", help: configs.getInstance().reboot_help },
-        SUDO: { value: "sudo", help: configs.getInstance().sudo_help }
+        SUDO: { value: "sudo", help: configs.getInstance().sudo_help },
+        MIAOU: { value: "miaou", help: configs.getInstance().miaou_help }
     };
 
     var Terminal = function (prompt, cmdLine, output, sidenav, profilePic, user, host, root, outputTimer) {
@@ -316,6 +318,9 @@ var main = (function () {
             case cmds.HELP.value:
                 this.help();
                 break;
+            case cmds.MIAOU.value:
+                this.miaou();
+                break;
             case cmds.CLEAR.value:
                 this.clear();
                 break;
@@ -358,7 +363,13 @@ var main = (function () {
     };
 
     Terminal.prototype.sudo = function () {
-        var result = "Please do not try to hack this webiste."
+        var result = "Please do not try to hack this webiste.";
+        this.type(result, this.unlock.bind(this));
+    }
+
+    Terminal.prototype.miaou = function () {
+        window.open('./miaou/main.html', '_blank');
+        var result = "Opening in new tab.";
         this.type(result, this.unlock.bind(this));
     }
 
